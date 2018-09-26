@@ -33,10 +33,10 @@ my $db_wherecol     = 'sender';
 my $db_persistcol   = 'persist';
 my $deltaconf       = 'daily'; # hourly|daily|weekly|monthly
 my $defaultquota    = 1000;
-my $sql_getquota    = "SELECT $db_quotacol, $db_tallycol, $db_expirycol, $db_persistcol FROM $db_table WHERE $db_wherecol = ? AND $db_quotacol > 0";
-my $sql_updatequota = "UPDATE $db_table SET $db_tallycol = $db_tallycol + ?, $db_updatedcol = NOW(), $db_expirycol = ? WHERE $db_wherecol = ?";
-my $sql_updatereset = "UPDATE $db_table SET $db_quotacol = ?, $db_tallycol = ?, $db_updatedcol = NOW(), $db_expirycol = ? WHERE $db_wherecol = ?";
-my $sql_insertquota = "INSERT INTO $db_table ($db_wherecol, $db_quotacol, $db_tallycol, $db_expirycol) VALUES (?, ?, ?, ?)";
+my $sql_getquota    = "SELECT `$db_quotacol`, `$db_tallycol`, `$db_expirycol`, `$db_persistcol` FROM `$db_table` WHERE `$db_wherecol` = ? AND `$db_quotacol` > 0";
+my $sql_updatequota = "UPDATE `$db_table` SET `$db_tallycol` = `$db_tallycol` + ?, `$db_updatedcol` = NOW(), `$db_expirycol` = ? WHERE `$db_wherecol` = ?";
+my $sql_updatereset = "UPDATE `$db_table` SET `$db_quotacol` = ?, `$db_tallycol` = ?, `$db_updatedcol` = NOW(), `$db_expirycol` = ? WHERE `$db_wherecol` = ?";
+my $sql_insertquota = "INSERT INTO `$db_table` (`$db_wherecol`, `$db_quotacol`, `$db_tallycol`, `$db_expirycol`) VALUES (?, ?, ?, ?)";
 ### END OF CONFIGURATION SECTION
 
 $0=join(' ',($0,@ARGV));
