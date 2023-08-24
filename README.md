@@ -1,8 +1,11 @@
 # ratelimit-policyd
 
+> [!WARNING]  
+> We're in 2023 and nobody uses, needs, or wants (nobody ever wanted it tbh.) Perl anymore. **This project is no longer maintained!** It is going to stay here, but its **successor [PolicydRateGuard](https://github.com/onlime/policyd-rate-guard)** is soon going to take over. We're going to release it soon. promised.
+
 A Sender rate limit policy daemon for Postfix.
 
-Copyright (c) Onlime Webhosting (http://www.onlime.ch)
+Copyright (c) [Onlime GmbH](https://www.onlime.ch)
 
 ## Credits
 
@@ -60,7 +63,7 @@ GRANT USAGE ON *.* TO policyd@'localhost' IDENTIFIED BY '********';
 GRANT SELECT, INSERT, UPDATE, DELETE ON policyd.* TO policyd@'localhost';
 ```
 
-Adjust configuration options in ```daemon.pl```:
+Adjust configuration options in `daemon.pl`:
 
 ```perl
 ### CONFIGURATION SECTION
@@ -85,10 +88,10 @@ my $db_expirycol    = 'expiry';
 my $db_wherecol     = 'sender';
 my $deltaconf       = 'daily'; # hourly|daily|weekly|monthly
 my $defaultquota    = 1000;
-my $sql_getquota    = "SELECT $db_quotacol, $db_tallycol, $db_expirycol FROM $db_table WHERE $db_wherecol = ? AND $db_quotacol > 0";
-my $sql_updatequota = "UPDATE $db_table SET $db_tallycol = $db_tallycol + ?, $db_updatedcol = NOW(), $db_expirycol = ? WHERE $db_wherecol = ?";
-my $sql_updatereset = "UPDATE $db_table SET $db_tallycol = ?, $db_updatedcol = NOW(), $db_expirycol = ? WHERE $db_wherecol = ?";
-my $sql_insertquota = "INSERT INTO $db_table ($db_wherecol, $db_quotacol, $db_tallycol, $db_expirycol) VALUES (?, ?, ?, ?)";
+my $sql_getquota    = "SELECT `$db_quotacol`, `$db_tallycol`, `$db_expirycol`, `$db_persistcol` FROM `$db_table` WHERE `$db_wherecol` = ? AND `$db_quotacol` > 0";
+my $sql_updatequota = "UPDATE `$db_table` SET `$db_tallycol` = `$db_tallycol` + ?, `$db_updatedcol` = NOW(), `$db_expirycol` = ? WHERE `$db_wherecol` = ?";
+my $sql_updatereset = "UPDATE `$db_table` SET `$db_quotacol` = ?, `$db_tallycol` = ?, `$db_updatedcol` = NOW(), `$db_expirycol` = ? WHERE `$db_wherecol` = ?";
+my $sql_insertquota = "INSERT INTO `$db_table` (`$db_wherecol`, `$db_quotacol`, `$db_tallycol`, `$db_expirycol`) VALUES (?, ?, ?, ?)";
 ### END OF CONFIGURATION SECTION
 ```
 
@@ -139,33 +142,30 @@ Threads running: 6, Threads waiting: 2
 
 ## Postfix Configuration
 
-Modify the postfix data restriction class ```smtpd_data_restrictions``` like the following, ```/etc/postfix/main.cf```:
+Modify the postfix data restriction class [`smtpd_data_restrictions`](https://www.postfix.org/postconf.5.html#smtpd_data_restrictions) like the following, `/etc/postfix/main.cf`:
 
 ```
 smtpd_data_restrictions = check_policy_service inet:$IP:$PORT
 ```
 
-sample configuration (using ratelimitpolicyd as alias as smtpd_data_restrictions does not allow any whitespace):
+sample configuration:
 
 ```
-smtpd_restriction_classes = ratelimitpolicyd
-ratelimitpolicyd = check_policy_service inet:127.0.0.1:10032
-
 smtpd_data_restrictions =
         reject_unauth_pipelining,
-        ratelimitpolicyd,
+        check_policy_service inet:127.0.0.1:10032,
         permit
 ```
 
-If you're sure that ratelimit-policyd is really running, restart Postfix:
+If you're sure that ratelimit-policyd is really running, reloadPostfix:
 
-```
-$ service postfix restart
+```bash
+$ systemctl reload postfix
 ```
 
 ## Logging
 
-Detailed logging is written to ``/var/log/ratelimit-policyd.log```. In addition, the most important information including the counter status is written to syslog:
+Detailed logging is written to `/var/log/ratelimit-policyd.log`. In addition, the most important information including the counter status is written to syslog:
 
 ```
 $ tail -f /var/log/ratelimit-policyd.log 
