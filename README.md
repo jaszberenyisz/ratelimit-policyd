@@ -1,7 +1,9 @@
 # ratelimit-policyd
 
 > [!WARNING]  
-> We're in 2023 and nobody uses, needs, or wants (nobody ever wanted it tbh.) Perl anymore. **This project is no longer maintained!** It is going to stay here, but its **successor [PolicydRateGuard](https://github.com/onlime/policyd-rate-guard)** is soon going to take over. We're going to release it soon. promised.
+> We're in 2023 and nobody uses, needs, or wants (nobody ever wanted it tbh.) Perl anymore. **This project is no longer maintained!** It is going to stay here, but its **successor [PolicydRateGuard](https://github.com/onlime/policyd-rate-guard)** is soon going to take over.
+>
+> ~~We're going to release it soon. promised.~~ **UPDATE 2023-08-29: [PolicydRateGuard](https://github.com/onlime/policyd-rate-guard) v0.5.0 was just released!** Fully written in Python.
 
 A Sender rate limit policy daemon for Postfix.
 
