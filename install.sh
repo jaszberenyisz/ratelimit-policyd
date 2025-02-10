@@ -21,3 +21,5 @@ ln -s "/lib/systemd/system/ratelimit.service" "/etc/systemd/system/"
 
 # install logrotation configuration
 ln -sf "$DIR/logrotate.d/ratelimit-policyd" /etc/logrotate.d/
+
+exit 0
