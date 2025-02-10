@@ -1,0 +1,13 @@
+[Unit]
+Description=Postfix Rate-limit
+After=postfix.service
+
+[Service]
+Type=simple
+ExecStart=/opt/ratelimit-policyd/daemon.pl
+Restart=always
+RestartSec=1
+TimeoutSec=5
+
+[Install]
+WantedBy=multi-user.target
