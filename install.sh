@@ -18,6 +18,7 @@ rm -f /lib/systemd/system/ratelimit.service
 cp "$DIR/lib/systemd/system/ratelimit.service" "/lib/systemd/system/"
 rm -f /etc/systemd/system/ratelimit.service
 ln -s "/lib/systemd/system/ratelimit.service" "/etc/systemd/system/"
+systemctl daemon-reload
 
 # install logrotation configuration
 ln -sf "$DIR/logrotate.d/ratelimit-policyd" /etc/logrotate.d/
