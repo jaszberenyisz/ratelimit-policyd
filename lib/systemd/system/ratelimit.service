@@ -4,6 +4,7 @@ After=postfix.service
 
 [Service]
 Type=simple
+PIDFile=/var/run/ratelimit-policyd.pid
 ExecStart=/opt/ratelimit-policyd/daemon.pl
 Restart=always
 RestartSec=1
